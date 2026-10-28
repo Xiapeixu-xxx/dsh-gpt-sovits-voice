@@ -1,61 +1,61 @@
 {
-  "name": "@xiapeixu/dsh-gpt-sovits-voice",
-  "version": "0.5.1",
-  "description": "把本机 GPT-SoVITS 的音色接进 DSH：sovits_speak / sovits_voices / sovits_status / sovits_stop + 设置页",
-  "type": "module",
-  "main": "lib/host.js",
-  "files": [
-    "lib",
-    "client.js",
-    "cordis.patch.yml",
-    "README.md",
-    "LICENSE",
-    "CHANGELOG.md"
-  ],
-  "keywords": [
-    "dsh",
-    "deepseek-harness",
-    "dsh-plugin",
-    "gpt-sovits",
-    "tts"
-  ],
-  "license": "MIT",
-  "os": [
-    "win32"
-  ],
-  "engines": {
-    "node": "\u003e=22.6"
-  },
-  "exports": {
-    ".": "./lib/host.js",
-    "./client": "./client.js",
-    "./package.json": "./package.json"
-  },
-  "dsh": {
-    "client": {
-      "platform": "web",
-      "inject": [
-        "slots"
-      ],
-      "external": [
-        "react"
-      ]
-    },
-    "bundle": {
-      "patch": "./cordis.patch.yml"
-    }
-  },
-  "scripts": {
-    "test": "node test/run.mjs \u0026\u0026 node test/routes.mjs \u0026\u0026 node test/test-route.mjs \u0026\u0026 node test/normalize.mjs \u0026\u0026 node test/start-route.mjs \u0026\u0026 node test/models.mjs",
-    "dev": "dsh --profile web --patch ./cordis.dev.patch.yml"
-  },
-  "author": "xiapeixu",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/xiapeixu/dsh-gpt-sovits-voice.git"
-  },
-  "homepage": "https://github.com/xiapeixu/dsh-gpt-sovits-voice#readme",
-  "bugs": {
-    "url": "https://github.com/xiapeixu/dsh-gpt-sovits-voice/issues"
-  }
+    "name":  "@xiapeixu/dsh-gpt-sovits-voice",
+    "version":  "0.5.3",
+    "description":  "把本机 GPT-SoVITS 的音色接进 DSH：sovits_speak / sovits_voices / sovits_status / sovits_stop + 设置页",
+    "type":  "module",
+    "main":  "lib/host.js",
+    "files":  [
+                  "lib",
+                  "client.js",
+                  "cordis.patch.yml",
+                  "README.md",
+                  "LICENSE",
+                  "CHANGELOG.md"
+              ],
+    "keywords":  [
+                     "dsh",
+                     "deepseek-harness",
+                     "dsh-plugin",
+                     "gpt-sovits",
+                     "tts"
+                 ],
+    "license":  "MIT",
+    "os":  [
+               "win32"
+           ],
+    "engines":  {
+                    "node":  "\u003e=22.6"
+                },
+    "exports":  {
+                    ".":  "./lib/host.js",
+                    "./client":  "./client.js",
+                    "./package.json":  "./package.json"
+                },
+    "dsh":  {
+                "client":  {
+                               "platform":  "web",
+                               "inject":  [
+                                              "slots"
+                                          ],
+                               "external":  [
+                                                "react"
+                                            ]
+                           },
+                "bundle":  {
+                               "patch":  "./cordis.patch.yml"
+                           }
+            },
+    "scripts":  {
+                    "test":  "node test/run.mjs \u0026\u0026 node test/routes.mjs \u0026\u0026 node test/test-route.mjs \u0026\u0026 node test/normalize.mjs \u0026\u0026 node test/start-route.mjs \u0026\u0026 node test/models.mjs",
+                    "dev":  "dsh --profile web --patch ./cordis.dev.patch.yml"
+                },
+    "author":  "xiapeixu",
+    "repository":  {
+                       "type":  "git",
+                       "url":  "git+https://github.com/xiapeixu/dsh-gpt-sovits-voice.git"
+                   },
+    "homepage":  "https://github.com/xiapeixu/dsh-gpt-sovits-voice#readme",
+    "bugs":  {
+                 "url":  "https://github.com/xiapeixu/dsh-gpt-sovits-voice/issues"
+             }
 }

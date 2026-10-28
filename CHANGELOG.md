@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.5.3
+
+- 启动日志改成记录真实版本号（`module loaded (v0.5.3)`），不再写死旧版本
+- README 增加「多工作区 / 多会话」：插件按 profile 装一次、配置全局、开发用 junction 指向源码
+
+## 0.5.2
+
+- 新增「只合成不播放」：工具参数 `play: false` + 配置 `playLocally`，音频落在 `~/.dsh/voice-out/`
+- 状态接口和设置页状态行显示插件版本，能一眼看出是不是装了旧宿主
+- 修复：语速 / `top_k` 等音色参数在旧宿主里改了不生效
+- 设置页新增「模型目录」「模型」两栏，切模型会调 `set_gpt_weights` / `set_sovits_weights`
+- 发布前收拾：默认配置去本机化、补 `LICENSE`、包名改 `@xiapeixu/dsh-gpt-sovits-voice`
+
 ## 0.5.1
 
 修 0.5.0 的致命打包问题：
