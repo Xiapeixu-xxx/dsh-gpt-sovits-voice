@@ -2,7 +2,7 @@
 // Run: node test/run.mjs
 
 import { createServer } from "node:http";
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -105,21 +105,28 @@ console.log("sovits_status ->", JSON.stringify(await pick("sovits_status").execu
 console.log("sovits_voices ->", JSON.stringify(await pick("sovits_voices").execute({})));
 
 const longText = "第一句话说得长一点，凑够字数。第二句话也长一点，继续凑字。第三句话再长一点，快够了。第四句话还是长一点，这下应该够了。";
+const firstIndex = requests.length;
 const result = await pick("sovits_speak").execute({ text: longText });
 console.log("sovits_speak  ->", JSON.stringify(result));
 console.log("sovits_stop   ->", JSON.stringify(await pick("sovits_stop").execute({})));
+const noPlay = await pick("sovits_speak").execute({ text: "这句只合成，不在本机播放。", play: false });
+console.log("sovits_speak(play:false) ->", JSON.stringify(noPlay));
+if (noPlay.played !== false || !Array.isArray(noPlay.files) || noPlay.files.length === 0 || !existsSync(noPlay.files[0])) {
+  console.error("FAILED: play:false should save a file without playing");
+  process.exit(1);
+}
 
-const first = requests[0];
+const first = requests[firstIndex];
 console.log("first request: media=" + first.get("media_type") + ", ref=" + first.get("ref_audio_path"));
-console.log("segments:", requests.length);
-console.log("joined text:", requests.map((params) => params.get("text")).join(""));
+console.log("segments:", requests.length - firstIndex);
+console.log("joined text:", requests.slice(firstIndex, firstIndex + result.segments).map((params) => params.get("text")).join(""));
 
 server.close();
 if (result.segments < 2) {
   console.error("FAILED: long text was not split");
   process.exit(1);
 }
-if (requests.map((params) => params.get("text")).join("") !== longText) {
+if (requests.slice(firstIndex, firstIndex + result.segments).map((params) => params.get("text")).join("") !== longText) {
   console.error("FAILED: split text does not match the original");
   process.exit(1);
 }

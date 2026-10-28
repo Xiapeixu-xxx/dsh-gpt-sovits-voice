@@ -1,5 +1,5 @@
 /**
- * dsh-gpt-sovits-voice —— 浏览器半端：在「设置」里加一页「语音」。
+ * @xiapeixu/dsh-gpt-sovits-voice —— 浏览器半端：在「设置」里加一页「语音」。
  * ============================================================================
  * 和 dsh-demo 同一套约定：
  *   1. 不是 ESM，是自注册脚本：window.__ModuleLoader__.load({ id, factory })。
@@ -10,7 +10,7 @@
  * ============================================================================
  */
 window.__ModuleLoader__.load({
-  id: "dsh-gpt-sovits-voice",
+  id: "@xiapeixu/dsh-gpt-sovits-voice",
   factory: (require) => {
     const React = require("react");
     const h = React.createElement;
@@ -110,7 +110,11 @@ window.__ModuleLoader__.load({
           const refresh = React.useCallback(async () => {
             setError("");
             try {
-              const [configResponse, statusResponse, modelsResponse] = await Promise.all([requestApi("/config"), requestApi("/status"), requestApi("/models")]);
+              const [configResponse, statusResponse, modelsResponse] = await Promise.all([
+                requestApi("/config"),
+                requestApi("/status"),
+                requestApi("/models"),
+              ]);
               setConfig(configResponse.config);
               setStatus(statusResponse);
               setModels(modelsResponse.models || []);
@@ -144,7 +148,7 @@ window.__ModuleLoader__.load({
                 body: JSON.stringify({ ...config, textLang: "zh", promptLang: "zh" }),
               });
               setConfig(response.config);
-              const statusResponse = await requestApi("/status");
+              const [statusResponse, modelsResponse] = await Promise.all([requestApi("/status"), requestApi("/models")]);
               setStatus(statusResponse);
               setModels(modelsResponse.models || []);
               setModelsDir(modelsResponse.modelsDir || "");
@@ -265,13 +269,13 @@ window.__ModuleLoader__.load({
               { style: styles.statusRow },
               h("span", { style: { ...styles.dot, background: status && status.running ? "#3fb950" : "#d29922" } }),
               h("span", null, status && status.running ? "GPT-SoVITS 在跑" : "连不上 GPT-SoVITS"),
-              h("span", { style: styles.hint }, status && status.endpoint ? status.endpoint : ""),
+              h(
+                "span",
+                { style: styles.hint },
+                (status && status.endpoint ? status.endpoint : "") + (status && status.version ? " · v" + status.version : ""),
+              ),
               !(status && status.running) &&
-                h(
-                  "button",
-                  { style: styles.secondaryButton, onClick: startService, disabled: starting },
-                  starting ? "启动中…" : "启动服务",
-                ),
+                h("button", { style: styles.secondaryButton, onClick: startService, disabled: starting }, starting ? "启动中…" : "启动服务"),
             ),
 
             h(
@@ -292,12 +296,15 @@ window.__ModuleLoader__.load({
               h(
                 "div",
                 { style: { display: "flex", gap: "8px", alignItems: "center" } },
-                h("button", { style: styles.secondaryButton, onClick: applyModel, disabled: applying || !modelId }, applying ? "切换中…" : "应用模型"),
+                h(
+                  "button",
+                  { style: styles.secondaryButton, onClick: applyModel, disabled: applying || !modelId },
+                  applying ? "切换中…" : "应用模型",
+                ),
                 h("span", { style: styles.hint }, modelsDir ? "模型目录：" + modelsDir : ""),
               ),
+              textField("modelsDir", "模型目录", { placeholder: "例如 D:\\AI\\GPT-SoVITS\\models" }),
               textField("endpoint", "服务地址", { placeholder: "http://127.0.0.1:9880/tts" }),
-
-
 
               selectField("textLang", "合成语言"),
               selectField("promptLang", "参考语言"),
@@ -346,6 +353,17 @@ window.__ModuleLoader__.load({
               ),
               h(
                 "label",
+                { style: { ...styles.row, alignItems: "center" } },
+                h("span", { style: styles.label }, "本机播放"),
+                h("input", {
+                  type: "checkbox",
+                  checked: config.playLocally !== false,
+                  onChange: (event) => setConfig({ ...config, playLocally: event.target.checked }),
+                }),
+                h("span", { style: styles.hint }, "关掉后只合成不播放，适合发到别处"),
+              ),
+              h(
+                "label",
                 { style: styles.row },
                 h("span", { style: styles.label }, "超时（毫秒）"),
                 h("input", {
@@ -363,7 +381,7 @@ window.__ModuleLoader__.load({
             h(
               "div",
               { style: { display: "flex", alignItems: "center", gap: "10px" } },
-              h("button", { style: styles.button, onClick: save, disabled: saving }, saving ? "保存中…" : "保存"),
+              h("button", { style: styles.secondaryButton, onClick: save, disabled: saving }, saving ? "保存中…" : "保存"),
               h("button", { style: styles.secondaryButton, onClick: testVoice, disabled: testing }, testing ? "正在念…" : "测试语音"),
               h("button", { style: styles.secondaryButton, onClick: refresh }, "刷新状态"),
               h("span", { style: styles.hint }, message || testMessage || (error ? "状态读取失败：" + error : "")),

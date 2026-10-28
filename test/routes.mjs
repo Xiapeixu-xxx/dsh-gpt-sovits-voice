@@ -56,12 +56,16 @@ await getConfig(fakeRequest('GET'), response)
 console.log('GET /config ->', JSON.stringify(response.state.body))
 
 response = fakeResponse()
-await getConfig(fakeRequest('POST', { endpoint: 'http://127.0.0.1:19881/tts', refAudio: 'new.wav', promptText: '新台词', speed: 1.2, topK: 20, timeoutMs: 90000, testText: '改过的测试文本' }), response)
+await getConfig(fakeRequest('POST', { endpoint: 'http://127.0.0.1:19881/tts', refAudio: 'new.wav', promptText: '新台词', speed: 1.2, topK: 20, timeoutMs: 90000, testText: '改过的测试文本', modelsDir: 'D:\\models' }), response)
 console.log('POST /config ->', JSON.stringify(response.state.body))
 
 response = fakeResponse()
 await getStatus(fakeRequest('GET'), response)
 console.log('GET /status ->', JSON.stringify(response.state.body))
+if (!/^\d+\.\d+\.\d+/.test(String(response.state.body.version))) {
+  console.error('FAILED: status should expose the plugin version')
+  process.exit(1)
+}
 
 const saved = JSON.parse(readFileSync(configPath, 'utf8'))
 console.log('saved voices:', JSON.stringify(saved.voices))
@@ -70,6 +74,7 @@ console.log('saved timeoutMs:', saved.timeoutMs)
 if (saved.voices.length !== 2) { console.error('FAILED: voices list was clobbered'); process.exit(1) }
 if (saved.voices[0].refAudio !== 'new.wav' || saved.voices[0].speed !== 1.2) { console.error('FAILED: default voice was not saved'); process.exit(1) }
 if (saved.voices[1].refAudio !== 'other.wav') { console.error('FAILED: other voice was modified'); process.exit(1) }
+if (saved.modelsDir !== 'D:\\models') { console.error('FAILED: modelsDir was not saved'); process.exit(1) }
 if (saved.testText !== '改过的测试文本') { console.error('FAILED: testText was not saved'); process.exit(1) }
 if (saved.timeoutMs !== 90000) { console.error('FAILED: timeoutMs was not saved'); process.exit(1) }
 console.log('routes self-test passed')

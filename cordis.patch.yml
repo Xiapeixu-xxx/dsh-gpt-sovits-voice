@@ -1,4 +1,4 @@
-# dsh-gpt-sovits-voice 的加载补丁
+# @xiapeixu/dsh-gpt-sovits-voice 的加载补丁
 #
 # 用途一（本地测试）：不动 profile 的补丁，直接给 dsh 加一层
 #   dsh web --patch D:\code\dsh-gpt-sovits-voice\cordis.patch.yml
@@ -10,4 +10,4 @@
 #   用 --patch 测试时，先把 profile 里那三行注释掉，或者只用一边。
 - insert:
     - id: gpt-sovits-voice
-      name: 'dsh-gpt-sovits-voice'
+      name: '@xiapeixu/dsh-gpt-sovits-voice'
