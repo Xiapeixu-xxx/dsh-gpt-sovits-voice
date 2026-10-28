@@ -1,0 +1,6 @@
+# 本地开发覆盖层：dsh web --patch <此文件的绝对路径>
+# Loader 以 profile 目录为基准解析相对路径，所以这里必须写绝对路径。
+# 这条直接指向宿主半边的入口，改完代码重启这个实例就能测，不用动 profile。
+- insert:
+    - id: gpt-sovits-voice
+      name: 'D:\code\dsh-gpt-sovits-voice\lib\host.js'

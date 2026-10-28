@@ -1,0 +1,13 @@
+# dsh-gpt-sovits-voice 的加载补丁
+#
+# 用途一（本地测试）：不动 profile 的补丁，直接给 dsh 加一层
+#   dsh web --patch D:\code\dsh-gpt-sovits-voice\cordis.patch.yml
+#
+# 用途二（正式装）：让 profile 的 package.json 把这个包列进 dsh.profile.bundles，
+#   这个文件会被自动读取并插入下面这条。
+#
+# ⚠ 同一个 id 别同时插两次（profile 的 cordis.patch.yml 里也有一份）：
+#   用 --patch 测试时，先把 profile 里那三行注释掉，或者只用一边。
+- insert:
+    - id: gpt-sovits-voice
+      name: 'dsh-gpt-sovits-voice'

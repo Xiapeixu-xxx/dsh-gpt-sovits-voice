@@ -1,0 +1,43 @@
+{
+  "name": "dsh-gpt-sovits-voice",
+  "version": "0.4.0",
+  "description": "把 GPT-SoVITS 的本地音色接进 DSH：sovits_speak / sovits_voices / sovits_status / sovits_stop + 设置页",
+  "type": "module",
+  "main": "lib/host.js",
+  "files": [
+    "lib",
+    "client.js",
+    "cordis.patch.yml",
+    "cordis.dev.patch.yml",
+    "README.md"
+  ],
+  "keywords": [
+    "deepseek-harness",
+    "dsh-plugin",
+    "gpt-sovits",
+    "tts"
+  ],
+  "license": "MIT",
+  "exports": {
+    ".": "./lib/host.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "inject": [
+        "slots"
+      ],
+      "external": [
+        "react"
+      ]
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "test": "dsh --profile web --patch ./cordis.dev.patch.yml"
+  }
+}
